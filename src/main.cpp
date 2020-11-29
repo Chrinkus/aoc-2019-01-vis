@@ -6,10 +6,35 @@
 
 #include <iostream>
 
+class Bar {
+public:
+    Bar() = default;
+    Bar(int x, int y, int w, int h)
+        : xx{x}, yy{y}, ww{w}, hh{h} { }
+
+    int x() const { return xx; }
+    int y() const { return yy; }
+    int w() const { return ww; }
+    int h() const { return hh; }
+    
+    void grow_width(double scale, int max)
+    {
+        int new_w = (1.0 + scale) * ww;
+        ww = new_w > max ? max : new_w;
+    }
+
+private:
+    int xx = 0;
+    int yy = 0;
+    int ww = 0;
+    int hh = 0;
+};
+
 class Viewport : public Fl_Group {
 private:
     double vp_angle = 0;
     static constexpr double FRAME_S = 1.0 / 60.0;
+    Bar bar = Bar{20, 360, 20, 20};
 
 public:
     Viewport(int xx, int yy, int ww, int hh, const char* ll = 0)
@@ -37,6 +62,10 @@ public:
         fl_end_polygon();
 
         fl_pop_matrix();
+
+        fl_rectf(bar.x(), bar.y(), bar.w(), bar.h(), FL_RED);
+
+        bar.grow_width(0.05, 560);
         increment_angle(2.0);
     }
 
