@@ -11,5 +11,9 @@ else()
     add_compile_options(-Wall -Wextra -Wpedantic)
 endif()
 
+# find FLTK
+find_package(FLTK REQUIRED NO_MODULE)
+include_directories(${FLTK_INCLUDE_DIRS})
+
 add_subdirectory(src)
 add_subdirectory(test)
